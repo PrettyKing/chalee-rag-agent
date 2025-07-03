@@ -101,6 +101,9 @@ Thumbs.db
 *.sqlite
 *.db
 
+yarn.lock
+package-lock.json
+
 # Test files
 test-documents/
 sample-data/
