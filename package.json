@@ -7,7 +7,7 @@
   "scripts": {
     "start": "node rag-agent.js",
     "server": "node server.js",
-    "dev": "nodemon server.js",
+    "dev": "nodemon --max-old-space-size=4096 server.js",
     "test": "node test.js",
     "test:full": "./scripts/test.sh",
     "setup": "./scripts/setup.sh",
