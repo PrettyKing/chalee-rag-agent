@@ -10,44 +10,44 @@ This guide helps you diagnose and fix common issues with the Chalee RAG Agent.
 #!/bin/bash
 # Run this script to check system health
 
-echo "🔍 Chalee RAG Agent Health Check"
-echo "================================"
+echo \"🔍 Chalee RAG Agent Health Check\"
+echo \"================================\"
 
 # Check Node.js
 if command -v node &> /dev/null; then
-    echo "✅ Node.js: $(node --version)"
+    echo \"✅ Node.js: $(node --version)\"
 else
-    echo "❌ Node.js: Not installed"
+    echo \"❌ Node.js: Not installed\"
 fi
 
 # Check application
 if curl -f http://localhost:3000/health &> /dev/null; then
-    echo "✅ Application: Running"
+    echo \"✅ Application: Running\"
 else
-    echo "❌ Application: Not responding"
+    echo \"❌ Application: Not responding\"
 fi
 
 # Check ChromaDB
 if curl -f http://localhost:8000/api/v1/heartbeat &> /dev/null; then
-    echo "✅ ChromaDB: Running"
+    echo \"✅ ChromaDB: Running\"
 else
-    echo "❌ ChromaDB: Not responding"
+    echo \"❌ ChromaDB: Not responding\"
 fi
 
 # Check disk space
 DISK_USAGE=$(df / | awk 'NR==2 {print $5}' | sed 's/%//')
 if [ $DISK_USAGE -lt 90 ]; then
-    echo "✅ Disk Space: ${DISK_USAGE}% used"
+    echo \"✅ Disk Space: ${DISK_USAGE}% used\"
 else
-    echo "⚠️  Disk Space: ${DISK_USAGE}% used (WARNING)"
+    echo \"⚠️  Disk Space: ${DISK_USAGE}% used (WARNING)\"
 fi
 
 # Check memory
-MEM_USAGE=$(free | awk 'NR==2{printf "%.0f", $3*100/$2}')
+MEM_USAGE=$(free | awk 'NR==2{printf \"%.0f\", $3*100/$2}')
 if [ $MEM_USAGE -lt 90 ]; then
-    echo "✅ Memory: ${MEM_USAGE}% used"
+    echo \"✅ Memory: ${MEM_USAGE}% used\"
 else
-    echo "⚠️  Memory: ${MEM_USAGE}% used (WARNING)"
+    echo \"⚠️  Memory: ${MEM_USAGE}% used (WARNING)\"
 fi
 ```
 
@@ -108,8 +108,8 @@ cat .env
 ### 2. ChromaDB Connection Issues
 
 #### Symptoms
-- "ChromaDB connection failed" errors
-- "Collection not found" errors
+- \"ChromaDB connection failed\" errors
+- \"Collection not found\" errors
 - Timeouts when adding documents
 
 #### Diagnosis
@@ -155,15 +155,15 @@ docker logs chalee-chromadb
 ### 3. OpenAI API Issues
 
 #### Symptoms
-- "OpenAI API error" messages
-- "Invalid API key" errors
+- \"OpenAI API error\" messages
+- \"Invalid API key\" errors
 - Rate limiting errors
 
 #### Diagnosis
 ```bash
 # Test API key
-curl https://api.openai.com/v1/models \
-  -H "Authorization: Bearer $OPENAI_API_KEY"
+curl https://api.openai.com/v1/models \\
+  -H \"Authorization: Bearer $OPENAI_API_KEY\"
 
 # Check .env file
 grep OPENAI_API_KEY .env
@@ -182,7 +182,7 @@ grep OPENAI_API_KEY .env
    async getEmbedding(text, retries = 3) {
        try {
            const response = await this.openai.embeddings.create({
-               model: "text-embedding-ada-002",
+               model: \"text-embedding-ada-002\",
                input: text
            });
            return response.data[0].embedding;
@@ -204,7 +204,7 @@ grep OPENAI_API_KEY .env
 ### 4. Memory Issues
 
 #### Symptoms
-- "Out of memory" errors
+- \"Out of memory\" errors
 - Slow performance
 - Process crashes
 
@@ -223,7 +223,7 @@ node --max-old-space-size=4096 server.js
 
 1. **Increase Node.js Memory Limit**:
    ```bash
-   export NODE_OPTIONS="--max-old-space-size=4096"
+   export NODE_OPTIONS=\"--max-old-space-size=4096\"
    npm run server
    ```
 
@@ -257,8 +257,8 @@ node --max-old-space-size=4096 server.js
 ### 5. Document Upload Issues
 
 #### Symptoms
-- "File upload failed" errors
-- "No files uploaded" messages
+- \"File upload failed\" errors
+- \"No files uploaded\" messages
 - Empty document processing
 
 #### Diagnosis
@@ -270,8 +270,8 @@ ls -la uploads/
 du -h uploads/*
 
 # Test upload endpoint
-curl -X POST http://localhost:3000/upload \
-  -F "documents=@test.txt"
+curl -X POST http://localhost:3000/upload \\
+  -F \"documents=@test.txt\"
 ```
 
 #### Solutions
@@ -315,9 +315,9 @@ curl -X POST http://localhost:3000/upload \
 #### Diagnosis
 ```bash
 # Test query performance
-time curl -X POST http://localhost:3000/query \
-  -H "Content-Type: application/json" \
-  -d '{"question": "test question"}'
+time curl -X POST http://localhost:3000/query \\
+  -H \"Content-Type: application/json\" \\
+  -d '{\"question\": \"test question\"}'
 
 # Check database size
 curl http://localhost:3000/stats
@@ -428,7 +428,7 @@ docker stats
    services:
      rag-agent:
        ports:
-         - "3001:3000"
+         - \"3001:3000\"
    ```
 
 ### 2. Volume Mount Issues
@@ -506,7 +506,7 @@ grep -i error logs/*.log | tail -20
 tail -f logs/combined.log | grep -i error
 
 # Check for memory leaks
-grep -i "heap" logs/*.log
+grep -i \"heap\" logs/*.log
 ```
 
 ### 2. Performance Monitoring
@@ -537,23 +537,23 @@ setInterval(() => performanceMonitor.logStats(), 5 * 60 * 1000);
 #!/bin/bash
 # health-monitor.sh
 
-HEALTH_URL="http://localhost:3000/health"
+HEALTH_URL=\"http://localhost:3000/health\"
 MAX_RETRIES=3
 RETRY_DELAY=5
 
 for i in $(seq 1 $MAX_RETRIES); do
     if curl -f $HEALTH_URL > /dev/null 2>&1; then
-        echo "Health check passed"
+        echo \"Health check passed\"
         exit 0
     else
-        echo "Health check failed (attempt $i/$MAX_RETRIES)"
+        echo \"Health check failed (attempt $i/$MAX_RETRIES)\"
         if [ $i -lt $MAX_RETRIES ]; then
             sleep $RETRY_DELAY
         fi
     fi
 done
 
-echo "All health checks failed - restarting service"
+echo \"All health checks failed - restarting service\"
 # Add restart logic here
 sudo systemctl restart chalee-rag-agent
 ```
@@ -566,7 +566,7 @@ sudo systemctl restart chalee-rag-agent
 #!/bin/bash
 # emergency-restart.sh
 
-echo "Emergency service restart initiated"
+echo \"Emergency service restart initiated\"
 
 # Stop all services
 docker-compose down
@@ -578,19 +578,19 @@ docker system prune -f
 npm cache clean --force
 
 # Restart services
-case "$1" in
-    "docker")
+case \"$1\" in
+    \"docker\")
         docker-compose up -d
         ;;
-    "pm2")
+    \"pm2\")
         pm2 start ecosystem.config.js
         ;;
-    "systemd")
+    \"systemd\")
         sudo systemctl start chalee-rag-agent
         ;;
 esac
 
-echo "Emergency restart completed"
+echo \"Emergency restart completed\"
 ```
 
 ### 2. Data Recovery
@@ -599,15 +599,15 @@ echo "Emergency restart completed"
 #!/bin/bash
 # recover-data.sh
 
-BACKUP_DIR="/backups"
+BACKUP_DIR=\"/backups\"
 LATEST_BACKUP=$(ls -t $BACKUP_DIR/chroma_backup_*.tar.gz | head -1)
 
-if [ -z "$LATEST_BACKUP" ]; then
-    echo "No backup found"
+if [ -z \"$LATEST_BACKUP\" ]; then
+    echo \"No backup found\"
     exit 1
 fi
 
-echo "Restoring from: $LATEST_BACKUP"
+echo \"Restoring from: $LATEST_BACKUP\"
 
 # Stop services
 docker-compose down
@@ -618,7 +618,7 @@ tar -xzf $LATEST_BACKUP -C /
 # Restart services
 docker-compose up -d
 
-echo "Data recovery completed"
+echo \"Data recovery completed\"
 ```
 
 ## Getting Help
@@ -629,7 +629,7 @@ echo "Data recovery completed"
 #!/bin/bash
 # collect-debug-info.sh
 
-DEBUG_DIR="debug-$(date +%Y%m%d_%H%M%S)"
+DEBUG_DIR=\"debug-$(date +%Y%m%d_%H%M%S)\"
 mkdir $DEBUG_DIR
 
 # System information
@@ -656,9 +656,9 @@ free -h > $DEBUG_DIR/memory.txt
 docker ps -a > $DEBUG_DIR/docker-containers.txt 2>/dev/null || true
 docker images > $DEBUG_DIR/docker-images.txt 2>/dev/null || true
 
-echo "Debug information collected in $DEBUG_DIR"
+echo \"Debug information collected in $DEBUG_DIR\"
 tar -czf $DEBUG_DIR.tar.gz $DEBUG_DIR
-echo "Archive created: $DEBUG_DIR.tar.gz"
+echo \"Archive created: $DEBUG_DIR.tar.gz\"
 ```
 
 ### 2. Support Channels
