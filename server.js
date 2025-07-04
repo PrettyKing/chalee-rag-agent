@@ -2,20 +2,10 @@
 import express from "express";
 import multer from "multer";
 import cors from "cors";
-import OptimizedRAGAgent from "./rag-agent-optimized.js";
+import OptimizedRAGAgent from "./rag-agent.js";
 
 const app = express();
 const port = process.env.PORT || 3000;
-
-// 内存监控
-function logMemoryUsage() {
-  const used = process.memoryUsage();
-  console.log("\n📊 内存使用情况:");
-  console.log(`  RSS: ${Math.round(used.rss / 1024 / 1024)} MB`);
-  console.log(`  堆总量: ${Math.round(used.heapTotal / 1024 / 1024)} MB`);
-  console.log(`  堆使用: ${Math.round(used.heapUsed / 1024 / 1024)} MB`);
-  console.log(`  外部: ${Math.round(used.external / 1024 / 1024)} MB`);
-}
 
 // 中间件
 app.use(cors());
@@ -61,10 +51,6 @@ async function initializeAgent() {
     ragAgent = new OptimizedRAGAgent();
     await ragAgent.initialize();
     console.log("✅ 优化版 RAG Agent 初始化完成");
-
-    // 启动内存监控
-    setInterval(logMemoryUsage, 60000); // 每分钟记录一次
-    logMemoryUsage(); // 立即记录一次
   } catch (error) {
     console.error("❌ RAG Agent 初始化失败:", error);
     process.exit(1);
@@ -103,6 +89,7 @@ app.get("/health", (req, res) => {
 app.post("/query", async (req, res) => {
   try {
     const { question } = req.body;
+    console.log("🔍 收到查询请求", question);
 
     if (!question || typeof question !== "string") {
       return res.status(400).json({
@@ -386,12 +373,6 @@ async function startServer() {
       console.log("  📊 GET  /stats               - 获取统计信息");
       console.log("  🏥 GET  /health              - 健康检查");
       console.log("  🧹 POST /cleanup             - 内存清理");
-      console.log("\n💡 优化特性:");
-      console.log("  • 内存使用监控");
-      console.log("  • 批处理优化");
-      console.log("  • 自动垃圾回收");
-      console.log("  • 文件大小限制");
-      console.log("  • 错误恢复机制\n");
     });
   } catch (error) {
     console.error("❌ 启动服务器失败:", error);
