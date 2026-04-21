@@ -79,15 +79,9 @@
       }
 
       @keyframes pulse {
-        0% {
-          opacity: 1;
-        }
-        50% {
-          opacity: 0.5;
-        }
-        100% {
-          opacity: 1;
-        }
+        0% { opacity: 1; }
+        50% { opacity: 0.5; }
+        100% { opacity: 1; }
       }
 
       .api-section {
@@ -129,18 +123,9 @@
         margin-right: 10px;
       }
 
-      .method.get {
-        background: #d4edda;
-        color: #155724;
-      }
-      .method.post {
-        background: #cce5ff;
-        color: #004085;
-      }
-      .method.delete {
-        background: #f8d7da;
-        color: #721c24;
-      }
+      .method.get { background: #d4edda; color: #155724; }
+      .method.post { background: #cce5ff; color: #004085; }
+      .method.delete { background: #f8d7da; color: #721c24; }
 
       .api-content {
         padding: 25px;
@@ -290,23 +275,13 @@
       }
 
       @keyframes spin {
-        0% {
-          transform: rotate(0deg);
-        }
-        100% {
-          transform: rotate(360deg);
-        }
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
       }
 
-      .success {
-        color: #28a745;
-      }
-      .error {
-        color: #dc3545;
-      }
-      .info {
-        color: #17a2b8;
-      }
+      .success { color: #28a745; }
+      .error { color: #dc3545; }
+      .info { color: #17a2b8; }
 
       .stats-grid {
         display: grid;
@@ -344,21 +319,11 @@
         overflow-x: auto;
       }
 
-      .json-key {
-        color: #68d391;
-      }
-      .json-string {
-        color: #f6ad55;
-      }
-      .json-number {
-        color: #4fd1c7;
-      }
-      .json-boolean {
-        color: #f093fb;
-      }
-      .json-null {
-        color: #a0aec0;
-      }
+      .json-key { color: #68d391; }
+      .json-string { color: #f6ad55; }
+      .json-number { color: #4fd1c7; }
+      .json-boolean { color: #f093fb; }
+      .json-null { color: #a0aec0; }
 
       .cleanup-warning {
         background: #fff3cd;
@@ -392,14 +357,9 @@
             <input
               type="text"
               id="apiBaseUrl"
-              value="http://localhost:3000"
+              value="https://chalee-rag-agent.chalee695469701.workers.dev"
               placeholder="API Base URL"
-              style="
-                width: 300px;
-                padding: 8px;
-                border-radius: 5px;
-                border: 1px solid #ccc;
-              "
+              style="width: 420px; padding: 8px; border-radius: 5px; border: 1px solid #ccc;"
             />
             <button class="btn" onclick="checkHealth()">检查状态</button>
           </div>
@@ -408,26 +368,15 @@
         <!-- 1. 健康检查 -->
         <div class="api-section">
           <div class="api-header" onclick="toggleSection('health')">
-            <h3>
-              <span class="method get">GET</span>
-              健康检查 - /health
-            </h3>
+            <h3><span class="method get">GET</span>健康检查 - /health</h3>
             <p>检查服务器运行状态</p>
           </div>
           <div class="api-content" id="health-content">
             <button class="btn" onclick="testHealth()">
-              <span
-                id="health-loading"
-                style="display: none"
-                class="loading"
-              ></span>
+              <span id="health-loading" style="display: none" class="loading"></span>
               测试健康检查
             </button>
-            <div
-              class="response-area"
-              id="health-response"
-              style="display: none"
-            >
+            <div class="response-area" id="health-response" style="display: none">
               <h4>响应结果:</h4>
               <div class="response-content" id="health-result"></div>
             </div>
@@ -437,35 +386,19 @@
         <!-- 2. 查询接口 -->
         <div class="api-section">
           <div class="api-header" onclick="toggleSection('query')">
-            <h3>
-              <span class="method post">POST</span>
-              智能问答 - /query
-            </h3>
+            <h3><span class="method post">POST</span>智能问答 - /query</h3>
             <p>向RAG Agent提问并获取AI回答</p>
           </div>
           <div class="api-content" id="query-content">
             <div class="form-group">
               <label for="queryQuestion">问题:</label>
-              <textarea
-                id="queryQuestion"
-                placeholder="输入你的问题，例如：什么是人工智能？"
-              >
-什么是RAG技术？</textarea
-              >
+              <textarea id="queryQuestion" placeholder="输入你的问题，例如：什么是人工智能？">什么是RAG技术？</textarea>
             </div>
             <button class="btn" onclick="testQuery()">
-              <span
-                id="query-loading"
-                style="display: none"
-                class="loading"
-              ></span>
+              <span id="query-loading" style="display: none" class="loading"></span>
               发送查询
             </button>
-            <div
-              class="response-area"
-              id="query-response"
-              style="display: none"
-            >
+            <div class="response-area" id="query-response" style="display: none">
               <h4>AI回答:</h4>
               <div class="response-content" id="query-result"></div>
             </div>
@@ -475,42 +408,23 @@
         <!-- 3. 文档上传 -->
         <div class="api-section">
           <div class="api-header" onclick="toggleSection('upload')">
-            <h3>
-              <span class="method post">POST</span>
-              文档上传 - /upload
-            </h3>
+            <h3><span class="method post">POST</span>文档上传 - /upload</h3>
             <p>上传文本文件到知识库</p>
           </div>
           <div class="api-content" id="upload-content">
             <div class="form-group">
               <label>选择文件:</label>
               <div class="file-input-wrapper">
-                <input
-                  type="file"
-                  class="file-input"
-                  id="uploadFiles"
-                  multiple
-                  accept=".txt,.md"
-                />
-                <div class="file-input-display">
-                  点击选择文本文件 (.txt, .md)
-                </div>
+                <input type="file" class="file-input" id="uploadFiles" multiple accept=".txt,.md" />
+                <div class="file-input-display">点击选择文本文件 (.txt, .md)</div>
               </div>
               <div id="fileList" style="margin-top: 10px"></div>
             </div>
             <button class="btn" onclick="testUpload()">
-              <span
-                id="upload-loading"
-                style="display: none"
-                class="loading"
-              ></span>
+              <span id="upload-loading" style="display: none" class="loading"></span>
               上传文件
             </button>
-            <div
-              class="response-area"
-              id="upload-response"
-              style="display: none"
-            >
+            <div class="response-area" id="upload-response" style="display: none">
               <h4>上传结果:</h4>
               <div class="response-content" id="upload-result"></div>
             </div>
@@ -520,10 +434,7 @@
         <!-- 4. 批量添加文档 -->
         <div class="api-section">
           <div class="api-header" onclick="toggleSection('batch')">
-            <h3>
-              <span class="method post">POST</span>
-              批量添加 - /documents/batch
-            </h3>
+            <h3><span class="method post">POST</span>批量添加 - /documents/batch</h3>
             <p>批量添加文档到知识库</p>
           </div>
           <div class="api-content" id="batch-content">
@@ -539,25 +450,14 @@
     "content": "机器学习是人工智能的一个重要子领域，它使计算机能够在没有明确编程的情况下学习和改进。",
     "source": "machine_learning.txt"
   }
-]</textarea
-              >
+]</textarea>
             </div>
             <button class="btn" onclick="testBatch()">
-              <span
-                id="batch-loading"
-                style="display: none"
-                class="loading"
-              ></span>
+              <span id="batch-loading" style="display: none" class="loading"></span>
               批量添加
             </button>
-            <button class="btn btn-secondary" onclick="addSampleData()">
-              添加示例数据
-            </button>
-            <div
-              class="response-area"
-              id="batch-response"
-              style="display: none"
-            >
+            <button class="btn btn-secondary" onclick="addSampleData()">添加示例数据</button>
+            <div class="response-area" id="batch-response" style="display: none">
               <h4>添加结果:</h4>
               <div class="response-content" id="batch-result"></div>
             </div>
@@ -567,21 +467,13 @@
         <!-- 5. 文档检索 -->
         <div class="api-section">
           <div class="api-header" onclick="toggleSection('retrieve')">
-            <h3>
-              <span class="method post">POST</span>
-              文档检索 - /retrieve
-            </h3>
+            <h3><span class="method post">POST</span>文档检索 - /retrieve</h3>
             <p>检索相关文档片段</p>
           </div>
           <div class="api-content" id="retrieve-content">
             <div class="form-group">
               <label for="retrieveQuery">检索查询:</label>
-              <input
-                type="text"
-                id="retrieveQuery"
-                placeholder="输入检索关键词"
-                value="人工智能"
-              />
+              <input type="text" id="retrieveQuery" placeholder="输入检索关键词" value="人工智能" />
             </div>
             <div class="form-group">
               <label for="retrieveTopK">返回数量:</label>
@@ -592,18 +484,10 @@
               </select>
             </div>
             <button class="btn" onclick="testRetrieve()">
-              <span
-                id="retrieve-loading"
-                style="display: none"
-                class="loading"
-              ></span>
+              <span id="retrieve-loading" style="display: none" class="loading"></span>
               开始检索
             </button>
-            <div
-              class="response-area"
-              id="retrieve-response"
-              style="display: none"
-            >
+            <div class="response-area" id="retrieve-response" style="display: none">
               <h4>检索结果:</h4>
               <div class="response-content" id="retrieve-result"></div>
             </div>
@@ -613,26 +497,15 @@
         <!-- 6. 统计信息 -->
         <div class="api-section">
           <div class="api-header" onclick="toggleSection('stats')">
-            <h3>
-              <span class="method get">GET</span>
-              统计信息 - /stats
-            </h3>
+            <h3><span class="method get">GET</span>统计信息 - /stats</h3>
             <p>获取知识库统计信息</p>
           </div>
           <div class="api-content" id="stats-content">
             <button class="btn" onclick="testStats()">
-              <span
-                id="stats-loading"
-                style="display: none"
-                class="loading"
-              ></span>
+              <span id="stats-loading" style="display: none" class="loading"></span>
               获取统计
             </button>
-            <div
-              class="response-area"
-              id="stats-response"
-              style="display: none"
-            >
+            <div class="response-area" id="stats-response" style="display: none">
               <h4>统计信息:</h4>
               <div class="stats-grid" id="stats-grid"></div>
               <div class="response-content" id="stats-result"></div>
@@ -640,47 +513,18 @@
           </div>
         </div>
 
-        <!-- 7. 清理知识库 -->
+        <!-- 7. 清理缓存 -->
         <div class="api-section">
           <div class="api-header" onclick="toggleSection('cleanup')">
-            <h3>
-              <span class="method delete">DELETE</span>
-              清理知识库 - /cleanup
-            </h3>
-            <p>清空所有文档和向量数据</p>
+            <h3><span class="method post">POST</span>清理缓存 - /cache/clear</h3>
+            <p>清理查询缓存</p>
           </div>
           <div class="api-content" id="cleanup-content">
-            <div class="cleanup-warning">
-              <strong>⚠️ 危险操作警告</strong><br />
-              此操作将永久删除知识库中的所有文档和向量数据，并且无法撤销。请确认您真的要清空整个知识库。
-            </div>
-
-            <div class="form-group">
-              <label for="cleanupConfirm"
-                >确认操作 (请输入 "CONFIRM" 以继续):</label
-              >
-              <input
-                type="text"
-                id="cleanupConfirm"
-                placeholder="输入 CONFIRM"
-                maxlength="7"
-              />
-            </div>
-
             <button class="btn btn-danger" onclick="testCleanup()">
-              <span
-                id="cleanup-loading"
-                style="display: none"
-                class="loading"
-              ></span>
-              🗑️ 清空知识库
+              <span id="cleanup-loading" style="display: none" class="loading"></span>
+              🗑️ 清理缓存
             </button>
-
-            <div
-              class="response-area"
-              id="cleanup-response"
-              style="display: none"
-            >
+            <div class="response-area" id="cleanup-response" style="display: none">
               <h4>清理结果:</h4>
               <div class="response-content" id="cleanup-result"></div>
             </div>
@@ -690,62 +534,41 @@
     </div>
 
     <script>
-      // 获取API基础URL
       function getApiBaseUrl() {
         return document.getElementById("apiBaseUrl").value.trim();
       }
 
-      // 显示/隐藏API部分
       function toggleSection(sectionId) {
         const content = document.getElementById(sectionId + "-content");
         content.classList.toggle("active");
       }
 
-      // 默认展开第一个部分
       document.getElementById("health-content").classList.add("active");
 
-      // 显示响应结果
       function showResponse(sectionId, data, isError = false) {
         const responseArea = document.getElementById(sectionId + "-response");
         const resultDiv = document.getElementById(sectionId + "-result");
-
         responseArea.style.display = "block";
-
         if (typeof data === "object") {
           resultDiv.innerHTML = formatJson(data);
         } else {
           resultDiv.textContent = data;
         }
-
-        resultDiv.className =
-          "response-content " + (isError ? "error" : "success");
+        resultDiv.className = "response-content " + (isError ? "error" : "success");
       }
 
-      // 格式化JSON显示
       function formatJson(obj) {
-        return (
-          '<div class="json-viewer">' +
-          syntaxHighlight(JSON.stringify(obj, null, 2)) +
-          "</div>"
-        );
+        return '<div class="json-viewer">' + syntaxHighlight(JSON.stringify(obj, null, 2)) + "</div>";
       }
 
-      // JSON语法高亮
       function syntaxHighlight(json) {
-        json = json
-          .replace(/&/g, "&amp;")
-          .replace(/</g, "&lt;")
-          .replace(/>/g, "&gt;");
+        json = json.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
         return json.replace(
           /("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g,
           function (match) {
             var cls = "json-number";
             if (/^"/.test(match)) {
-              if (/:$/.test(match)) {
-                cls = "json-key";
-              } else {
-                cls = "json-string";
-              }
+              if (/:$/.test(match)) { cls = "json-key"; } else { cls = "json-string"; }
             } else if (/true|false/.test(match)) {
               cls = "json-boolean";
             } else if (/null/.test(match)) {
@@ -756,44 +579,24 @@
         );
       }
 
-      // 显示加载状态
       function showLoading(sectionId, show = true) {
         const loadingEl = document.getElementById(sectionId + "-loading");
-        if (loadingEl) {
-          loadingEl.style.display = show ? "inline-block" : "none";
-        }
+        if (loadingEl) loadingEl.style.display = show ? "inline-block" : "none";
       }
 
-      // 通用API请求函数
-      async function apiRequest(
-        method,
-        endpoint,
-        data = null,
-        isFormData = false
-      ) {
+      async function apiRequest(method, endpoint, data = null, isFormData = false) {
         const url = getApiBaseUrl() + endpoint;
-        const options = {
-          method: method,
-          headers: {},
-        };
-
+        const options = { method: method, headers: {} };
         if (data && !isFormData) {
           options.headers["Content-Type"] = "application/json";
           options.body = JSON.stringify(data);
         } else if (data && isFormData) {
           options.body = data;
         }
-
         try {
           const response = await fetch(url, options);
           const result = await response.json();
-
-          if (!response.ok) {
-            throw new Error(
-              `HTTP ${response.status}: ${result.error || "请求失败"}`
-            );
-          }
-
+          if (!response.ok) throw new Error(`HTTP ${response.status}: ${result.error || "请求失败"}`);
           return result;
         } catch (error) {
           console.error("API请求错误:", error);
@@ -801,45 +604,29 @@
         }
       }
 
-      // 1. 健康检查
-      async function checkHealth() {
-        await testHealth();
-      }
+      async function checkHealth() { await testHealth(); }
 
       async function testHealth() {
         showLoading("health");
         try {
           const result = await apiRequest("GET", "/health");
           showResponse("health", result);
-
-          // 更新状态指示器
-          const statusDot = document.getElementById("statusDot");
-          const statusText = document.getElementById("statusText");
-          statusDot.classList.add("online");
-          statusText.textContent = "服务正常运行";
-          statusText.className = "success";
+          document.getElementById("statusDot").classList.add("online");
+          document.getElementById("statusText").textContent = "服务正常运行 ✓";
+          document.getElementById("statusText").className = "success";
         } catch (error) {
           showResponse("health", { error: error.message }, true);
-
-          // 更新状态指示器
-          const statusDot = document.getElementById("statusDot");
-          const statusText = document.getElementById("statusText");
-          statusDot.classList.remove("online");
-          statusText.textContent = "服务连接失败";
-          statusText.className = "error";
+          document.getElementById("statusDot").classList.remove("online");
+          document.getElementById("statusText").textContent = "服务连接失败";
+          document.getElementById("statusText").className = "error";
         } finally {
           showLoading("health", false);
         }
       }
 
-      // 2. 查询接口
       async function testQuery() {
         const question = document.getElementById("queryQuestion").value.trim();
-        if (!question) {
-          alert("请输入问题");
-          return;
-        }
-
+        if (!question) { alert("请输入问题"); return; }
         showLoading("query");
         try {
           const result = await apiRequest("POST", "/query", { question });
@@ -851,17 +638,13 @@
         }
       }
 
-      // 3. 文件上传
       function updateFileList() {
         const files = document.getElementById("uploadFiles").files;
         const fileList = document.getElementById("fileList");
-
         if (files.length > 0) {
           let html = "<h5>已选择的文件:</h5><ul>";
           for (let i = 0; i < files.length; i++) {
-            html += `<li>${files[i].name} (${(files[i].size / 1024).toFixed(
-              1
-            )} KB)</li>`;
+            html += `<li>${files[i].name} (${(files[i].size / 1024).toFixed(1)} KB)</li>`;
           }
           html += "</ul>";
           fileList.innerHTML = html;
@@ -870,22 +653,13 @@
         }
       }
 
-      document
-        .getElementById("uploadFiles")
-        .addEventListener("change", updateFileList);
+      document.getElementById("uploadFiles").addEventListener("change", updateFileList);
 
       async function testUpload() {
         const files = document.getElementById("uploadFiles").files;
-        if (files.length === 0) {
-          alert("请选择文件");
-          return;
-        }
-
+        if (files.length === 0) { alert("请选择文件"); return; }
         const formData = new FormData();
-        for (let i = 0; i < files.length; i++) {
-          formData.append("documents", files[i]);
-        }
-
+        for (let i = 0; i < files.length; i++) formData.append("documents", files[i]);
         showLoading("upload");
         try {
           const result = await apiRequest("POST", "/upload", formData, true);
@@ -897,31 +671,17 @@
         }
       }
 
-      // 4. 批量添加文档
       async function testBatch() {
-        const documentsText = document
-          .getElementById("batchDocuments")
-          .value.trim();
-        if (!documentsText) {
-          alert("请输入文档数据");
-          return;
-        }
-
+        const documentsText = document.getElementById("batchDocuments").value.trim();
+        if (!documentsText) { alert("请输入文档数据"); return; }
         try {
           const documents = JSON.parse(documentsText);
-
           showLoading("batch");
-          const result = await apiRequest("POST", "/documents/batch", {
-            documents,
-          });
+          const result = await apiRequest("POST", "/documents/batch", { documents });
           showResponse("batch", result);
         } catch (error) {
           if (error instanceof SyntaxError) {
-            showResponse(
-              "batch",
-              { error: "JSON格式错误: " + error.message },
-              true
-            );
+            showResponse("batch", { error: "JSON格式错误: " + error.message }, true);
           } else {
             showResponse("batch", { error: error.message }, true);
           }
@@ -930,43 +690,19 @@
         }
       }
 
-      // 添加示例数据
       function addSampleData() {
         const sampleData = [
-          {
-            content:
-              "Node.js 是一个基于 Chrome V8 引擎的 JavaScript 运行时环境。它允许开发者在服务器端运行 JavaScript 代码，具有事件驱动、非阻塞 I/O 模型等特点。",
-            source: "nodejs_intro.txt",
-          },
-          {
-            content:
-              "Express.js 是 Node.js 最流行的 Web 应用框架之一。它提供了一套强大的功能来开发 Web 和移动应用程序，简化了服务器创建过程。",
-            source: "express_intro.txt",
-          },
-          {
-            content:
-              "RESTful API 是一种基于 REST 架构风格的应用程序接口。它使用标准的 HTTP 方法来操作资源，具有无状态、可缓存、统一接口等特点。",
-            source: "restful_api.txt",
-          },
+          { content: "Node.js 是一个基于 Chrome V8 引擎的 JavaScript 运行时环境。它允许开发者在服务器端运行 JavaScript 代码，具有事件驱动、非阻塞 I/O 模型等特点。", source: "nodejs_intro.txt" },
+          { content: "Express.js 是 Node.js 最流行的 Web 应用框架之一。它提供了一套强大的功能来开发 Web 和移动应用程序，简化了服务器创建过程。", source: "express_intro.txt" },
+          { content: "RESTful API 是一种基于 REST 架构风格的应用程序接口。它使用标准的 HTTP 方法来操作资源，具有无状态、可缓存、统一接口等特点。", source: "restful_api.txt" },
         ];
-
-        document.getElementById("batchDocuments").value = JSON.stringify(
-          sampleData,
-          null,
-          2
-        );
+        document.getElementById("batchDocuments").value = JSON.stringify(sampleData, null, 2);
       }
 
-      // 5. 文档检索
       async function testRetrieve() {
         const query = document.getElementById("retrieveQuery").value.trim();
         const topK = parseInt(document.getElementById("retrieveTopK").value);
-
-        if (!query) {
-          alert("请输入检索查询");
-          return;
-        }
-
+        if (!query) { alert("请输入检索查询"); return; }
         showLoading("retrieve");
         try {
           const result = await apiRequest("POST", "/retrieve", { query, topK });
@@ -978,23 +714,21 @@
         }
       }
 
-      // 6. 统计信息
       async function testStats() {
         showLoading("stats");
         try {
           const result = await apiRequest("GET", "/stats");
           showResponse("stats", result);
-
-          // 显示统计卡片
-          const statsGrid = document.getElementById("stats-grid");
-          statsGrid.innerHTML = `
-                    <div class="stat-card">
-                        <div class="stat-value">${
-                          result.documentCount || 0
-                        }</div>
-                        <div class="stat-label">文档数量</div>
-                    </div>
-                `;
+          document.getElementById("stats-grid").innerHTML = `
+            <div class="stat-card">
+              <div class="stat-value">${result.vectorCount || 0}</div>
+              <div class="stat-label">向量块数量</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-value">${result.r2Objects || 0}</div>
+              <div class="stat-label">已上传文件</div>
+            </div>
+          `;
         } catch (error) {
           showResponse("stats", { error: error.message }, true);
         } finally {
@@ -1002,19 +736,10 @@
         }
       }
 
-      // 7. 清理知识库
       async function testCleanup() {
-        const confirmInput = document
-          .getElementById("cleanupConfirm")
-          .value.trim();
-        if (confirmInput !== "CONFIRM") {
-          alert("请确认输入 'CONFIRM' 以继续");
-          return;
-        }
-
         showLoading("cleanup");
         try {
-          const result = await apiRequest("POST", "/cleanup");
+          const result = await apiRequest("POST", "/cache/clear");
           showResponse("cleanup", result);
         } catch (error) {
           showResponse("cleanup", { error: error.message }, true);
@@ -1022,13 +747,12 @@
           showLoading("cleanup", false);
         }
       }
-      // 页面加载时自动检查健康状态
+
       window.addEventListener("load", function () {
         setTimeout(checkHealth, 1000);
       });
 
-      // 自动刷新状态
-      setInterval(checkHealth, 30000); // 每30秒检查一次
+      setInterval(checkHealth, 30000);
     </script>
   </body>
 </html>
