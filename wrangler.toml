@@ -20,13 +20,13 @@ bucket_name = "chalee-rag-uploads"
 # ============ KV 缓存 ============
 [[kv_namespaces]]
 binding = "KV"
-id = "YOUR_KV_NAMESPACE_ID"          # 执行 wrangler kv namespace create RAG_CACHE 获取
+id = "c1861ad3b977476f9a7df0c92b78b4be"
 
 # ============ D1 元数据库 ============
 [[d1_databases]]
 binding = "DB"
 database_name = "rag-metadata"
-database_id = "YOUR_D1_DATABASE_ID"  # 执行 wrangler d1 create rag-metadata 获取
+database_id = "639f9576-3e8c-4c65-97ce-439ddf24a70c"
 
 # ============ 环境变量 ============
 [vars]
