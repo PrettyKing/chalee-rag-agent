@@ -3,23 +3,12 @@
  *
  * 原项目: Express.js (server.js) + Node.js
  * 迁移后: Hono + Cloudflare Workers
- *
- * API 路由对照：
- *   POST /query               → handleQuery        (智能问答)
- *   POST /query/stream        → handleQueryStream  (流式问答，新增)
- *   POST /upload              → handleUpload       (上传文档)
- *   POST /documents/batch     → handleBatchDocuments (批量添加)
- *   POST /retrieve            → handleRetrieve     (检索文档)
- *   GET  /stats               → handleStats        (统计信息)
- *   GET  /health              → handleHealth       (健康检查)
- *   POST /cache/clear         → handleCacheClear   (清理缓存)
  */
 
 import { Hono } from 'hono';
 import { cors } from 'hono/cors';
 import { logger } from 'hono/logger';
 import { prettyJSON } from 'hono/pretty-json';
-import { rateLimiter } from 'hono-rate-limiter';
 
 import type { Env } from './types';
 import { handleQuery, handleQueryStream } from './routes/query';
@@ -28,6 +17,7 @@ import { handleRetrieve, handleStats, handleHealth, handleCacheClear } from './r
 
 const app = new Hono<{ Bindings: Env }>();
 
+// ============ 全局中间件 ============
 app.use('*', cors({
   origin: '*',
   allowMethods: ['GET', 'POST', 'OPTIONS'],
@@ -37,16 +27,21 @@ app.use('*', cors({
 app.use('*', logger());
 app.use('*', prettyJSON());
 
-app.use('*', rateLimiter({
-  windowMs: 60 * 1000,
-  limit: 30,
-  keyGenerator: (c) => {
-    return c.req.header('CF-Connecting-IP')
-      ?? c.req.header('X-Forwarded-For')
-      ?? 'unknown';
-  },
-}));
+// 简单限流（用 KV 实现，避免全局异步问题）
+app.use('/query', async (c, next) => {
+  const ip = c.req.header('CF-Connecting-IP') ?? 'unknown';
+  const key = `ratelimit:${ip}`;
+  const count = parseInt(await c.env.KV.get(key) ?? '0');
 
+  if (count >= 30) {
+    return c.json({ error: '请求过于频繁，请稍后再试' }, 429);
+  }
+
+  await c.env.KV.put(key, String(count + 1), { expirationTtl: 60 });
+  await next();
+});
+
+// ============ 路由 ============
 app.get('/health', handleHealth);
 app.post('/query', handleQuery);
 app.post('/query/stream', handleQueryStream);
