@@ -60,14 +60,11 @@
     .messages { flex:1; overflow-y:auto; padding:28px 32px; display:flex; flex-direction:column; gap:22px; scroll-behavior:smooth; }
     .messages::-webkit-scrollbar { width:4px; }
     .messages::-webkit-scrollbar-thumb { background:var(--border2); border-radius:4px; }
-    .empty-state { flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:12px; text-align:center; padding:60px 40px; opacity:0; animation:fadeUp 0.5s 0.1s ease forwards; }
+    .empty-state { flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px; text-align:center; padding:60px 40px; opacity:0; animation:fadeUp 0.5s 0.1s ease forwards; }
     @keyframes fadeUp { from{opacity:0;transform:translateY(14px)} to{opacity:1;transform:translateY(0)} }
     .empty-glyph { font-family:'Instrument Serif',serif; font-size:48px; color:var(--text-dim); }
     .empty-title { font-family:'Instrument Serif',serif; font-size:24px; letter-spacing:-0.4px; }
     .empty-sub { font-size:13px; color:var(--text-muted); max-width:320px; line-height:1.65; }
-    .suggestions { display:flex; flex-wrap:wrap; gap:8px; justify-content:center; margin-top:16px; max-width:500px; }
-    .suggestion-chip { padding:7px 13px; border-radius:20px; border:1px solid var(--border2); background:var(--surface); font-size:13px; color:var(--text-muted); cursor:pointer; transition:all 0.15s; }
-    .suggestion-chip:hover { border-color:rgba(200,240,87,0.3); background:var(--accent-dim); color:var(--accent); }
     .msg { display:flex; gap:12px; animation:fadeUp 0.3s ease; }
     .msg.user { flex-direction:row-reverse; }
     .avatar { width:32px; height:32px; border-radius:9px; flex-shrink:0; display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:600; }
@@ -126,18 +123,7 @@
     .result-box.show { display:block; }
     .result-box pre { white-space:pre-wrap; word-break:break-all; font-family:'DM Sans',sans-serif; }
 
-    /* ── Drop zone fix: display:block so label expands full width ── */
-    .drop-zone {
-      display: block;                          /* ← 关键修复 */
-      width: 100%;
-      border: 1.5px dashed var(--border2);
-      border-radius: 10px;
-      padding: 36px 20px;
-      text-align: center;
-      cursor: pointer;
-      transition: all .2s;
-      background: var(--surface2);
-    }
+    .drop-zone { display:block; width:100%; border:1.5px dashed var(--border2); border-radius:10px; padding:36px 20px; text-align:center; cursor:pointer; transition:all .2s; background:var(--surface2); }
     .drop-zone:hover, .drop-zone.drag { border-color:rgba(200,240,87,.4); background:var(--accent-dim); }
     .drop-zone svg { margin-bottom:10px; opacity:.4; display:block; margin-left:auto; margin-right:auto; }
     .drop-zone p { font-size:13px; color:var(--text-muted); }
@@ -230,12 +216,6 @@
         <div class="empty-glyph">⌘</div>
         <div class="empty-title">向知识库提问</div>
         <div class="empty-sub">先在「上传文档」中添加文件，再用自然语言提问，AI 将检索相关内容并回答。</div>
-        <div class="suggestions">
-          <div class="suggestion-chip" onclick="fillQuestion(this.textContent)">什么是 RAG 技术？</div>
-          <div class="suggestion-chip" onclick="fillQuestion(this.textContent)">总结文档的主要内容</div>
-          <div class="suggestion-chip" onclick="fillQuestion(this.textContent)">有哪些关键概念？</div>
-          <div class="suggestion-chip" onclick="fillQuestion(this.textContent)">如何使用这个系统？</div>
-        </div>
       </div>
     </div>
     <div class="input-area">
@@ -259,7 +239,6 @@
       <div class="section-title">上传文档</div>
       <div class="section-desc">支持 .txt 和 .md 格式，单文件不超过 5MB，最多同时上传 10 个。上传后自动切块并写入向量数据库。</div>
       <div class="form-card">
-        <!-- 修复: label 改为 div，点击事件手动触发 input，避免 display:inline 问题 -->
         <div class="drop-zone" id="dropZone"
           onclick="document.getElementById('uploadInput').click()"
           ondragover="dragOver(event)" ondragleave="dragLeave(event)" ondrop="dropFiles(event)">
@@ -468,11 +447,6 @@ function appendThinking() {
   return id;
 }
 function removeThinking(id) { document.getElementById(id)?.remove(); }
-function fillQuestion(t) {
-  const el = document.getElementById('questionInput');
-  el.value = t; el.focus(); autoResize(el);
-  document.getElementById('sendBtn').disabled = false;
-}
 function handleKey(e) { if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendQuery();} }
 function autoResize(el) { el.style.height='auto'; el.style.height=Math.min(el.scrollHeight,150)+'px'; }
 
