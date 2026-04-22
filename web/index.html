@@ -8,29 +8,17 @@
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #0d0d0f;
-      --surface: #16161a;
-      --surface2: #1e1e24;
-      --border: rgba(255,255,255,0.07);
-      --border2: rgba(255,255,255,0.12);
-      --text: #e8e8ea;
-      --text-muted: #6b6b78;
-      --text-dim: #3a3a44;
-      --accent: #c8f057;
-      --accent-dim: rgba(200,240,87,0.12);
-      --user-bg: #1e2a14;
-      --user-border: rgba(200,240,87,0.2);
-      --radius: 16px;
-      --radius-sm: 10px;
+      --bg: #0d0d0f; --surface: #16161a; --surface2: #1e1e24;
+      --border: rgba(255,255,255,0.07); --border2: rgba(255,255,255,0.12);
+      --text: #e8e8ea; --text-muted: #6b6b78; --text-dim: #3a3a44;
+      --accent: #c8f057; --accent-dim: rgba(200,240,87,0.12);
+      --user-bg: #1e2a14; --user-border: rgba(200,240,87,0.2);
+      --radius: 16px; --radius-sm: 10px;
     }
     * { margin:0; padding:0; box-sizing:border-box; }
     body { font-family:'DM Sans',sans-serif; background:var(--bg); color:var(--text); height:100vh; display:flex; overflow:hidden; }
 
-    .sidebar {
-      width:240px; flex-shrink:0;
-      background:var(--surface); border-right:1px solid var(--border);
-      display:flex; flex-direction:column; padding:20px 14px;
-    }
+    .sidebar { width:240px; flex-shrink:0; background:var(--surface); border-right:1px solid var(--border); display:flex; flex-direction:column; padding:20px 14px; }
     .logo { display:flex; align-items:center; gap:10px; padding:8px 10px 18px; border-bottom:1px solid var(--border); margin-bottom:16px; }
     .logo-icon { width:32px; height:32px; background:var(--accent); border-radius:8px; display:flex; align-items:center; justify-content:center; }
     .logo-icon svg { width:18px; height:18px; }
@@ -48,15 +36,13 @@
     .status-dot.online { background:var(--accent); box-shadow:0 0 6px var(--accent); }
 
     .main { flex:1; display:flex; flex-direction:column; min-width:0; }
-    .topbar { display:flex; align-items:center; justify-content:space-between; padding:15px 28px; border-bottom:1px solid var(--border); flex-shrink:0; }
-    .topbar-left { display:flex; align-items:center; gap:10px; }
+    .topbar { display:flex; align-items:center; padding:15px 28px; border-bottom:1px solid var(--border); flex-shrink:0; gap:10px; }
     .topbar-title { font-family:'Instrument Serif',serif; font-size:18px; letter-spacing:-0.3px; }
     .topbar-badge { font-size:11px; padding:3px 8px; border-radius:20px; background:var(--accent-dim); color:var(--accent); border:1px solid rgba(200,240,87,0.2); font-weight:500; }
 
     .panel { display:none; flex:1; flex-direction:column; overflow:hidden; }
     .panel.active { display:flex; }
 
-    /* Chat */
     .messages { flex:1; overflow-y:auto; padding:28px 32px; display:flex; flex-direction:column; gap:22px; scroll-behavior:smooth; }
     .messages::-webkit-scrollbar { width:4px; }
     .messages::-webkit-scrollbar-thumb { background:var(--border2); border-radius:4px; }
@@ -97,7 +83,6 @@
     .input-hint { display:flex; align-items:center; justify-content:space-between; margin-top:7px; padding:0 3px; }
     .hint-text { font-size:11px; color:var(--text-dim); }
 
-    /* Content panels */
     .content-panel { flex:1; overflow-y:auto; padding:28px 32px; }
     .content-panel::-webkit-scrollbar { width:4px; }
     .content-panel::-webkit-scrollbar-thumb { background:var(--border2); border-radius:4px; }
@@ -129,7 +114,6 @@
     .drop-zone p { font-size:13px; color:var(--text-muted); }
     .drop-zone span { font-size:11px; color:var(--text-dim); margin-top:5px; display:block; }
     .drop-zone input { display:none; }
-
     .file-list { margin-top:12px; display:flex; flex-direction:column; gap:6px; }
     .file-tag { display:flex; align-items:center; justify-content:space-between; padding:7px 11px; background:var(--surface2); border:1px solid var(--border); border-radius:8px; font-size:12px; }
     .file-tag span { color:var(--text-muted); }
@@ -148,7 +132,6 @@
 
     .spinner { display:inline-block; width:14px; height:14px; border:2px solid rgba(0,0,0,.2); border-top-color:#0d0d0f; border-radius:50%; animation:spin .7s linear infinite; }
     @keyframes spin { to{transform:rotate(360deg)} }
-
     .toast { position:fixed; bottom:22px; left:50%; transform:translateX(-50%) translateY(16px); background:var(--surface2); border:1px solid var(--border2); color:var(--text); padding:9px 16px; border-radius:10px; font-size:13px; opacity:0; transition:all .3s; pointer-events:none; z-index:200; }
     .toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
   </style>
@@ -173,10 +156,6 @@
   <div class="nav-item" onclick="switchPanel('upload',this)">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
     上传文档
-  </div>
-  <div class="nav-item" onclick="switchPanel('batch',this)">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
-    批量添加
   </div>
   <div class="nav-item" onclick="switchPanel('retrieve',this)">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
@@ -203,10 +182,8 @@
 
 <main class="main">
   <div class="topbar">
-    <div class="topbar-left">
-      <span class="topbar-title" id="pageTitle">智能问答</span>
-      <span class="topbar-badge">Workers AI</span>
-    </div>
+    <span class="topbar-title" id="pageTitle">智能问答</span>
+    <span class="topbar-badge">Workers AI</span>
   </div>
 
   <!-- 1. Chat -->
@@ -244,9 +221,7 @@
           ondragover="dragOver(event)" ondragleave="dragLeave(event)" ondrop="dropFiles(event)">
           <input type="file" id="uploadInput" multiple accept=".txt,.md" onchange="pickFiles(this.files)">
           <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-            <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
-            <polyline points="17 8 12 3 7 8"/>
-            <line x1="12" y1="3" x2="12" y2="15"/>
+            <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/>
           </svg>
           <p>点击选择文件，或拖放到此处</p>
           <span>.txt · .md · 最多 10 个 · 单文件 ≤ 5MB</span>
@@ -264,35 +239,7 @@
     </div>
   </div>
 
-  <!-- 3. Batch -->
-  <div class="panel" id="panel-batch">
-    <div class="content-panel">
-      <div class="section-title">批量添加文档</div>
-      <div class="section-desc">以 JSON 格式批量添加文档内容到知识库，每次最多 50 条。</div>
-      <div class="form-card">
-        <div class="field">
-          <label>文档 JSON 数组</label>
-          <textarea id="batchInput" rows="8" placeholder='[{"content":"文档内容...","source":"文件名.txt"}]'>[
-  {
-    "content": "人工智能（AI）是计算机科学的一个分支，旨在创造能够执行通常需要人类智能的任务的机器。",
-    "source": "ai_definition.txt"
-  },
-  {
-    "content": "机器学习是人工智能的一个重要子领域，它使计算机能够在没有明确编程的情况下学习和改进。",
-    "source": "machine_learning.txt"
-  }
-]</textarea>
-        </div>
-        <div class="btn-row">
-          <button class="btn btn-primary" onclick="doBatch()">批量添加</button>
-          <button class="btn btn-ghost" onclick="loadSampleData()">填入示例数据</button>
-        </div>
-        <div class="result-box" id="batchResult"></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- 4. Retrieve -->
+  <!-- 3. Retrieve -->
   <div class="panel" id="panel-retrieve">
     <div class="content-panel">
       <div class="section-title">文档检索</div>
@@ -319,7 +266,7 @@
     </div>
   </div>
 
-  <!-- 5. Stats -->
+  <!-- 4. Stats -->
   <div class="panel" id="panel-stats">
     <div class="content-panel">
       <div class="section-title">统计信息</div>
@@ -338,7 +285,7 @@
     </div>
   </div>
 
-  <!-- 6. Cache -->
+  <!-- 5. Cache -->
   <div class="panel" id="panel-cache">
     <div class="content-panel">
       <div class="section-title">清理缓存</div>
@@ -375,7 +322,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 
-const pageTitles = { chat:'智能问答', upload:'上传文档', batch:'批量添加', retrieve:'文档检索', stats:'统计信息', cache:'清理缓存' };
+const pageTitles = { chat:'智能问答', upload:'上传文档', retrieve:'文档检索', stats:'统计信息', cache:'清理缓存' };
 function switchPanel(id, el) {
   document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
   document.getElementById('panel-' + id).classList.add('active');
@@ -501,29 +448,6 @@ async function doUpload() {
     btn.innerHTML = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>上传并处理`;
     btn.disabled = selectedFiles.length === 0;
   }
-}
-
-function loadSampleData() {
-  document.getElementById('batchInput').value = JSON.stringify([
-    {content:'Node.js 是一个基于 Chrome V8 引擎的 JavaScript 运行时环境，具有事件驱动、非阻塞 I/O 的特点。',source:'nodejs.txt'},
-    {content:'Express.js 是 Node.js 最流行的 Web 应用框架，简化了 HTTP 路由和中间件处理。',source:'express.txt'},
-    {content:'RESTful API 使用标准 HTTP 方法操作资源，具有无状态、统一接口等特点。',source:'rest.txt'}
-  ],null,2);
-}
-async function doBatch() {
-  const val = document.getElementById('batchInput').value.trim();
-  const box = document.getElementById('batchResult');
-  let docs;
-  try { docs = JSON.parse(val); } catch(e) { box.innerHTML=`<span style="color:#f87171">JSON 格式错误：${e.message}</span>`; box.classList.add('show'); return; }
-  if (!Array.isArray(docs)||!docs.length) { box.innerHTML=`<span style="color:#f87171">请提供非空的文档数组</span>`; box.classList.add('show'); return; }
-  box.innerHTML=`<span style="color:var(--text-muted)">处理中...</span>`; box.classList.add('show');
-  try {
-    const r = await fetch(`${API_BASE}/documents/batch`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({documents:docs})});
-    const d = await r.json();
-    if (!r.ok) throw new Error(d.error);
-    box.innerHTML=`<pre>${JSON.stringify(d,null,2)}</pre>`;
-    showToast(`✓ 添加成功，生成 ${d.chunksCreated} 个向量块`);
-  } catch(e) { box.innerHTML=`<span style="color:#f87171">${esc(e.message)}</span>`; }
 }
 
 async function doRetrieve() {
