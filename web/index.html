@@ -6,7 +6,6 @@
   <title>知识库查询系统</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
-  <!-- highlight.js 暗色主题 -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
   <style>
     :root {
@@ -147,6 +146,7 @@
     .retrieve-result-meta{display:flex;justify-content:space-between;margin-bottom:6px;}
     .retrieve-result-source{font-size:11px;color:var(--accent);}
     .retrieve-result-score{font-size:11px;color:var(--text-dim);}
+
     /* ── Markdown (marked + highlight.js) ── */
     .md-body{line-height:1.75;}
     .md-body h1,.md-body h2,.md-body h3{font-family:'Instrument Serif',serif;font-weight:400;margin:14px 0 6px;}
@@ -161,15 +161,33 @@
     .md-body blockquote{border-left:3px solid rgba(200,240,87,.4);margin:8px 0;padding:4px 12px;background:rgba(200,240,87,.04);border-radius:0 6px 6px 0;color:var(--text-muted);}
     .md-body ul,.md-body ol{padding-left:20px;margin:5px 0;}
     .md-body li{margin:3px 0;}
+    /* 图片：限制最大高度，避免撑破气泡 */
+    .md-body img{max-width:100%;max-height:280px;object-fit:contain;border-radius:6px;margin:6px 0;display:block;}
     /* inline code */
     .md-body :not(pre) > code{background:#1a1a20;border:1px solid rgba(255,255,255,0.08);border-radius:5px;padding:1px 6px;font-family:'Courier New',monospace;font-size:12.5px;color:#c8f057;}
-    /* code block wrapper: override hljs github-dark background to match our theme */
+    /* code block */
     .md-body pre{border:1px solid rgba(255,255,255,0.08) !important;border-radius:10px !important;margin:10px 0 !important;position:relative;overflow:hidden;}
     .md-body pre .hljs{background:#0d1117 !important;padding:14px 16px !important;font-size:12.5px !important;line-height:1.65 !important;overflow-x:auto;}
     .md-body .code-lang{position:absolute;top:8px;right:10px;font-size:10px;color:var(--text-dim);font-family:'DM Sans',sans-serif;letter-spacing:.06em;z-index:1;pointer-events:none;}
+    /* table */
     .md-body table{width:100%;border-collapse:collapse;margin:8px 0;font-size:13px;}
     .md-body th{background:var(--surface2);padding:7px 10px;text-align:left;border:1px solid var(--border2);font-weight:500;}
     .md-body td{padding:6px 10px;border:1px solid var(--border);color:var(--text-muted);}
+    /* ::: admonition 块 */
+    .md-admonition{border-radius:8px;padding:10px 14px;margin:10px 0;border-left:3px solid;font-size:13px;}
+    .md-admonition-title{font-size:11px;font-weight:600;margin-bottom:5px;text-transform:uppercase;letter-spacing:.06em;}
+    .md-admonition-body{line-height:1.65;color:var(--text-muted);}
+    .md-admonition-tip{background:rgba(200,240,87,.07);border-color:var(--accent);}
+    .md-admonition-tip .md-admonition-title{color:var(--accent);}
+    .md-admonition-info{background:rgba(96,165,250,.07);border-color:#60a5fa;}
+    .md-admonition-info .md-admonition-title{color:#60a5fa;}
+    .md-admonition-warning{background:rgba(251,191,36,.07);border-color:#fbbf24;}
+    .md-admonition-warning .md-admonition-title{color:#fbbf24;}
+    .md-admonition-danger{background:rgba(248,113,113,.07);border-color:#f87171;}
+    .md-admonition-danger .md-admonition-title{color:#f87171;}
+    .md-admonition-note,.md-admonition-details{background:rgba(148,163,184,.07);border-color:#94a3b8;}
+    .md-admonition-note .md-admonition-title,.md-admonition-details .md-admonition-title{color:#94a3b8;}
+
     /* about page */
     .arch-wrap{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:24px;margin-bottom:16px;overflow-x:auto;}
     .arch-wrap svg{display:block;margin:0 auto;}
@@ -528,7 +546,6 @@
 
 <div class="toast" id="toast"></div>
 
-<!-- marked + highlight.js CDN -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/9.1.6/marked.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
 
@@ -553,7 +570,6 @@ document.addEventListener('DOMContentLoaded', () => {
   // ── 配置 marked + highlight.js ──
   const renderer = new marked.Renderer();
   renderer.code = function(code, lang) {
-    // 兼容 marked 9.x 参数格式
     const codeStr = typeof code === 'object' ? code.text : code;
     const langStr = typeof code === 'object' ? code.lang : lang;
     const language = langStr && hljs.getLanguage(langStr) ? langStr : 'plaintext';
@@ -561,11 +577,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const langTag = langStr ? `<span class="code-lang">${langStr}</span>` : '';
     return `<pre>${langTag}<code class="hljs language-${language}">${highlighted}</code></pre>`;
   };
-  marked.use({
-    renderer,
-    breaks: true,   // 单个换行也渲染为 <br>
-    gfm: true,      // GitHub Flavored Markdown
-  });
+  marked.use({ renderer, breaks: true, gfm: true });
 
   aiEnabled = localStorage.getItem('rag_ai_enabled') === 'true';
   aiApiKey  = localStorage.getItem('rag_api_key') || '';
@@ -690,7 +702,6 @@ function appendMsg(role, text, sources=[], mode='') {
   const modeBadge = modeInfo ? `<span class="mode-badge ${modeInfo.cls}">${modeInfo.text}</span>` : '';
   const el = document.createElement('div');
   el.className = `msg ${role}`;
-  // AI 回答用 marked 渲染，用户消息保持纯文本
   const bodyHtml = role === 'ai' ? renderMarkdown(text) : esc(text).replace(/\n/g,'<br>');
   el.innerHTML = `
     <div class="avatar ${role}">${role==='ai'?'K':'我'}</div>
@@ -812,10 +823,49 @@ async function doCacheClear() {
   } catch(e) { box.innerHTML=`<span style="color:#f87171">${esc(e.message)}</span>`; }
 }
 
-// ── Markdown 渲染（marked + highlight.js）────
+// ── Markdown 渲染 ─────────────────────────────
+// admonition 类型 → 图标
+const ADMONITION_ICON = {
+  tip:'💡', info:'ℹ️', warning:'⚠️', danger:'🚨', note:'📝', details:'📋',
+};
+
+/**
+ * 在传给 marked 之前，把 VitePress/Docusaurus 风格的 ::: 块
+ * 转换成带 class 的 HTML div，这样 marked 会原样保留它们。
+ *
+ * 支持格式：
+ *   ::: danger 标题文字
+ *   内容
+ *   :::
+ *
+ *   ::: tip
+ *   内容
+ *   :::
+ */
+function preprocessAdmonitions(text) {
+  return text.replace(
+    /:::\s*(\w+)([^\n]*)\n([\s\S]*?):::/gm,
+    (_, rawType, rawTitle, rawBody) => {
+      const type = rawType.trim().toLowerCase();
+      const title = rawTitle.trim() || rawType.toUpperCase();
+      const icon = ADMONITION_ICON[type] || '📌';
+      const body = rawBody.trim();
+      return (
+        `\n<div class="md-admonition md-admonition-${type}">` +
+        `<div class="md-admonition-title">${icon} ${title}</div>` +
+        `<div class="md-admonition-body">${body}</div>` +
+        `</div>\n`
+      );
+    }
+  );
+}
+
 function renderMarkdown(raw) {
   try {
-    return marked.parse(raw ?? '');
+    // 1. 先处理 ::: 块（marked 不支持此语法）
+    const preprocessed = preprocessAdmonitions(raw ?? '');
+    // 2. 再交给 marked 解析标准 Markdown
+    return marked.parse(preprocessed);
   } catch (e) {
     console.warn('marked parse error:', e);
     return esc(raw).replace(/\n/g, '<br>');
