@@ -6,6 +6,8 @@
   <title>知识库查询系统</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <!-- highlight.js 暗色主题 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
   <style>
     :root {
       --bg:#0d0d0f; --surface:#16161a; --surface2:#1e1e24;
@@ -145,7 +147,7 @@
     .retrieve-result-meta{display:flex;justify-content:space-between;margin-bottom:6px;}
     .retrieve-result-source{font-size:11px;color:var(--accent);}
     .retrieve-result-score{font-size:11px;color:var(--text-dim);}
-    /* ── Markdown rendering in AI bubbles ── */
+    /* ── Markdown (marked + highlight.js) ── */
     .md-body{line-height:1.75;}
     .md-body h1,.md-body h2,.md-body h3{font-family:'Instrument Serif',serif;font-weight:400;margin:14px 0 6px;}
     .md-body h1{font-size:18px;}.md-body h2{font-size:16px;}.md-body h3{font-size:14px;font-weight:500;}
@@ -159,10 +161,12 @@
     .md-body blockquote{border-left:3px solid rgba(200,240,87,.4);margin:8px 0;padding:4px 12px;background:rgba(200,240,87,.04);border-radius:0 6px 6px 0;color:var(--text-muted);}
     .md-body ul,.md-body ol{padding-left:20px;margin:5px 0;}
     .md-body li{margin:3px 0;}
-    .md-body code{background:#1a1a20;border:1px solid rgba(255,255,255,0.08);border-radius:5px;padding:1px 6px;font-family:'Courier New',monospace;font-size:12.5px;color:#c8f057;}
-    .md-body pre{background:#111318;border:1px solid rgba(255,255,255,0.08);border-radius:9px;padding:14px 16px;overflow-x:auto;margin:8px 0;position:relative;}
-    .md-body pre code{background:none;border:none;padding:0;font-size:12.5px;color:#e2e8f0;line-height:1.65;}
-    .md-body .lang-tag{position:absolute;top:8px;right:10px;font-size:10px;color:var(--text-dim);font-family:'DM Sans',sans-serif;letter-spacing:.04em;}
+    /* inline code */
+    .md-body :not(pre) > code{background:#1a1a20;border:1px solid rgba(255,255,255,0.08);border-radius:5px;padding:1px 6px;font-family:'Courier New',monospace;font-size:12.5px;color:#c8f057;}
+    /* code block wrapper: override hljs github-dark background to match our theme */
+    .md-body pre{border:1px solid rgba(255,255,255,0.08) !important;border-radius:10px !important;margin:10px 0 !important;position:relative;overflow:hidden;}
+    .md-body pre .hljs{background:#0d1117 !important;padding:14px 16px !important;font-size:12.5px !important;line-height:1.65 !important;overflow-x:auto;}
+    .md-body .code-lang{position:absolute;top:8px;right:10px;font-size:10px;color:var(--text-dim);font-family:'DM Sans',sans-serif;letter-spacing:.06em;z-index:1;pointer-events:none;}
     .md-body table{width:100%;border-collapse:collapse;margin:8px 0;font-size:13px;}
     .md-body th{background:var(--surface2);padding:7px 10px;text-align:left;border:1px solid var(--border2);font-weight:500;}
     .md-body td{padding:6px 10px;border:1px solid var(--border);color:var(--text-muted);}
@@ -432,12 +436,8 @@
       <div class="arch-wrap">
         <svg width="100%" viewBox="0 0 760 460" xmlns="http://www.w3.org/2000/svg" style="max-width:760px;">
           <defs>
-            <marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-              <path d="M2 1L8 5L2 9" fill="none" stroke="rgba(255,255,255,0.25)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-            </marker>
-            <marker id="arrG" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-              <path d="M2 1L8 5L2 9" fill="none" stroke="#c8f057" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-            </marker>
+            <marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="rgba(255,255,255,0.25)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker>
+            <marker id="arrG" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="#c8f057" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker>
           </defs>
           <text x="380" y="28" text-anchor="middle" fill="#e8e8ea" font-family="'Instrument Serif',serif" font-size="16" letter-spacing="-0.3">Cloudflare RAG 知识库架构</text>
           <rect x="20" y="44" width="720" height="64" rx="10" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
@@ -528,6 +528,10 @@
 
 <div class="toast" id="toast"></div>
 
+<!-- marked + highlight.js CDN -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/marked/9.1.6/marked.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+
 <script>
 const API_BASE = 'https://chalee-rag-agent.chalee695469701.workers.dev';
 let isLoading = false;
@@ -545,6 +549,24 @@ const MODE_LABELS = {
 document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('apiUrlShort').textContent =
     new URL(API_BASE).hostname.split('.')[0] + '.workers.dev';
+
+  // ── 配置 marked + highlight.js ──
+  const renderer = new marked.Renderer();
+  renderer.code = function(code, lang) {
+    // 兼容 marked 9.x 参数格式
+    const codeStr = typeof code === 'object' ? code.text : code;
+    const langStr = typeof code === 'object' ? code.lang : lang;
+    const language = langStr && hljs.getLanguage(langStr) ? langStr : 'plaintext';
+    const highlighted = hljs.highlight(codeStr || '', { language, ignoreIllegals: true }).value;
+    const langTag = langStr ? `<span class="code-lang">${langStr}</span>` : '';
+    return `<pre>${langTag}<code class="hljs language-${language}">${highlighted}</code></pre>`;
+  };
+  marked.use({
+    renderer,
+    breaks: true,   // 单个换行也渲染为 <br>
+    gfm: true,      // GitHub Flavored Markdown
+  });
+
   aiEnabled = localStorage.getItem('rag_ai_enabled') === 'true';
   aiApiKey  = localStorage.getItem('rag_api_key') || '';
   aiModel   = localStorage.getItem('rag_ai_model') || '';
@@ -668,6 +690,7 @@ function appendMsg(role, text, sources=[], mode='') {
   const modeBadge = modeInfo ? `<span class="mode-badge ${modeInfo.cls}">${modeInfo.text}</span>` : '';
   const el = document.createElement('div');
   el.className = `msg ${role}`;
+  // AI 回答用 marked 渲染，用户消息保持纯文本
   const bodyHtml = role === 'ai' ? renderMarkdown(text) : esc(text).replace(/\n/g,'<br>');
   el.innerHTML = `
     <div class="avatar ${role}">${role==='ai'?'K':'我'}</div>
@@ -789,84 +812,14 @@ async function doCacheClear() {
   } catch(e) { box.innerHTML=`<span style="color:#f87171">${esc(e.message)}</span>`; }
 }
 
-// ── Markdown renderer ─────────────────────────
+// ── Markdown 渲染（marked + highlight.js）────
 function renderMarkdown(raw) {
-  // 1. Protect fenced code blocks
-  const blocks = [];
-  let s = raw.replace(/```([\w-]*)\n?([\s\S]*?)```/g, (_, lang, code) => {
-    const idx = blocks.length;
-    const langTag = lang ? `<span class="lang-tag">${esc(lang)}</span>` : '';
-    blocks.push(`<pre>${langTag}<code>${esc(code.replace(/\n$/, ''))}</code></pre>`);
-    return `\x00BLK${idx}\x00`;
-  });
-  // 2. Protect inline code
-  const inlines = [];
-  s = s.replace(/`([^`\n]+)`/g, (_, c) => {
-    const idx = inlines.length;
-    inlines.push(`<code>${esc(c)}</code>`);
-    return `\x00INL${idx}\x00`;
-  });
-  // 3. Process line by line
-  const lines = s.split('\n');
-  const out = [];
-  let inUL = false, inOL = false, tableRows = [];
-
-  const flushList = () => {
-    if (inUL) { out.push('</ul>'); inUL = false; }
-    if (inOL) { out.push('</ol>'); inOL = false; }
-  };
-  const flushTable = () => {
-    if (!tableRows.length) return;
-    const cols = (row) => row.split('|').filter(c => c.trim() !== '');
-    const head = '<thead><tr>' + cols(tableRows[0]).map(c=>`<th>${inlineFmt(c.trim())}</th>`).join('') + '</tr></thead>';
-    const body = '<tbody>' + tableRows.slice(2).map(row =>
-      '<tr>' + cols(row).map(c=>`<td>${inlineFmt(c.trim())}</td>`).join('') + '</tr>'
-    ).join('') + '</tbody>';
-    out.push(`<table>${head}${body}</table>`);
-    tableRows = [];
-  };
-
-  for (let i = 0; i < lines.length; i++) {
-    const ln = lines[i];
-    // Heading
-    const hm = ln.match(/^(#{1,3})\s+(.+)/);
-    if (hm) { flushList(); flushTable(); out.push(`<h${hm[1].length}>${inlineFmt(hm[2])}</h${hm[1].length}>`); continue; }
-    // HR
-    if (/^[-*_]{3,}$/.test(ln.trim())) { flushList(); flushTable(); out.push('<hr>'); continue; }
-    // Blockquote
-    if (ln.startsWith('> ')) { flushList(); flushTable(); out.push(`<blockquote>${inlineFmt(ln.slice(2))}</blockquote>`); continue; }
-    // Table
-    if (ln.includes('|') && (ln.trim().startsWith('|') || tableRows.length)) {
-      flushList(); tableRows.push(ln); continue;
-    }
-    if (tableRows.length) flushTable();
-    // UL
-    const ulm = ln.match(/^[ \t]*[-*+]\s+(.+)/);
-    if (ulm) { if (!inUL) { out.push('<ul>'); inUL = true; } out.push(`<li>${inlineFmt(ulm[1])}</li>`); continue; }
-    // OL
-    const olm = ln.match(/^[ \t]*\d+\.\s+(.+)/);
-    if (olm) { if (!inOL) { out.push('<ol>'); inOL = true; } out.push(`<li>${inlineFmt(olm[1])}</li>`); continue; }
-    flushList();
-    if (!ln.trim()) { out.push('<div style="height:6px"></div>'); continue; }
-    out.push(`<p>${inlineFmt(ln)}</p>`);
+  try {
+    return marked.parse(raw ?? '');
+  } catch (e) {
+    console.warn('marked parse error:', e);
+    return esc(raw).replace(/\n/g, '<br>');
   }
-  flushList(); flushTable();
-
-  function inlineFmt(t) {
-    return t
-      .replace(/\*\*\*(.+?)\*\*\*/g, '<strong><em>$1</em></strong>')
-      .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
-      .replace(/__(.+?)__/g, '<strong>$1</strong>')
-      .replace(/\*(.+?)\*/g, '<em>$1</em>')
-      .replace(/_(.+?)_/g, '<em>$1</em>')
-      .replace(/~~(.+?)~~/g, '<del>$1</del>')
-      .replace(/\[(.+?)\]\((.+?)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>');
-  }
-
-  let result = out.join('\n');
-  result = result.replace(/\x00INL(\d+)\x00/g, (_, i) => inlines[+i]);
-  result = result.replace(/\x00BLK(\d+)\x00/g, (_, i) => blocks[+i]);
-  return result;
 }
 
 function esc(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
